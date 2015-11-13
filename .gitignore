@@ -3,4 +3,5 @@ fabfile.*
 node_modules
 build
 src/**/*.html
+src/**/*_sass.css
 *.log

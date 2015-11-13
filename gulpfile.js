@@ -5,7 +5,7 @@ var gulp = require('gulp')
   , rename = require('gulp-rename')
   , del = require('del')
   , jade = require('jade')
-  // , sass = require('gulp-sass')
+  , sass = require('gulp-sass')
   , minifyInline = require('gulp-minify-inline')
   ;
 
@@ -47,19 +47,19 @@ gulp.task('jade', ['clean'], function() {
     ;
 });
 
-// gulp.task('watch-sass', ['sass'], function() {
-//   gulp.watch(['public/css/**/*.scss', 'public/css/**/*.sass'], ['sass']);
-// });
-// gulp.task('sass', ['clean-sass'], function () {
-//   gulp.src(['src/css/**/*.scss', 'src/css/**/*.sass'])
-//     .pipe(sass().on('error', sass.logError))
-//     .pipe(gulp.dest('src/css'));
-// });
-// gulp.task('clean-sass', function(cb) {
-//   del(['src/css/'], cb);
-// });
+gulp.task('watch-sass', ['sass'], function() {
+  gulp.watch(['src/css/**/*.scss', 'src/css/**/*.sass'], ['sass']);
+});
+gulp.task('sass', function () {
+  gulp.src(['src/css/**/*.scss', 'src/css/**/*.sass'])
+    .pipe(sass().on('error', sass.logError))
+    .pipe(rename({
+      suffix: '_sass'
+    }))
+    .pipe(gulp.dest('src/css'));
+});
 
-gulp.task('build', ['css', 'js', 'jade', 'copy']);
+gulp.task('build', ['css', 'js', 'jade', 'sass', 'copy']);
 
 
 gulp.task('dev-clean-html', function(cb) {
@@ -74,7 +74,7 @@ gulp.task('dev-jade', ['dev-clean-html'], function() {
     ;
 });
 
-gulp.task('dev', ['dev-jade'], function() {
+gulp.task('dev', ['dev-jade', 'watch-sass'], function() {
   gulp.watch(paths.jade, ['dev-jade']);
 });
 

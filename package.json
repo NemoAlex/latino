@@ -7,7 +7,8 @@
   "license": "ISC",
   "dependencies": {
     "del": "^1.1.1",
-    "gulp": "^3.8.10"
+    "gulp": "^3.8.10",
+    "gulp-sass": "^2.1.0"
   },
   "devDependencies": {
     "gulp-jade": "^0.10.0",
