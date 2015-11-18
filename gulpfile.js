@@ -11,6 +11,8 @@ var gulp = require('gulp')
 
 var paths = {
   jade: ['src/**/*.jade', '!src/include/*.jade'],
+  // jsLib: ['node_modules/vue/dist/vue.js'],
+  jsLib: [''],
   js: 'src/js/**/*',
   css: 'src/css/**/*',
   bin: ['src/img*/**/*', 'src/fonts*/**/*'],
@@ -31,6 +33,15 @@ gulp.task('css', ['clean'], function() {
     ;
 });
 
+gulp.task('clean-js-lib', function(cb) {
+  del('src/js/lib', cb);
+});
+gulp.task('js-lib', ['clean-js-lib'], function(cb) {
+  return gulp.src(paths.jsLib)
+    .pipe(gulp.dest('src/js/lib/'))
+    ;
+});
+
 gulp.task('js', ['clean'], function() {
   return gulp.src(paths.js)
     .pipe(uglify())
@@ -47,9 +58,18 @@ gulp.task('jade', ['clean'], function() {
     ;
 });
 
+gulp.task('dev-jade', function() {
+  return gulp.src(paths.jade)
+    .pipe(gulpJade({jade: jade}))
+    .pipe(rename({extname: '.html'}))
+    .pipe(gulp.dest('src/'))
+    ;
+});
+
 gulp.task('watch-sass', ['sass'], function() {
   gulp.watch(['src/css/**/*.scss', 'src/css/**/*.sass'], ['sass']);
 });
+
 gulp.task('sass', function () {
   gulp.src(['src/css/**/*.scss', 'src/css/**/*.sass'])
     .pipe(sass().on('error', sass.logError))
@@ -66,15 +86,7 @@ gulp.task('dev-clean-html', function(cb) {
   del('src/**/*.html', cb);
 });
 
-gulp.task('dev-jade', ['dev-clean-html'], function() {
-  return gulp.src(paths.jade)
-    .pipe(gulpJade({jade: jade}))
-    .pipe(rename({extname: '.html'}))
-    .pipe(gulp.dest('src/'))
-    ;
-});
-
-gulp.task('dev', ['dev-jade', 'watch-sass'], function() {
+gulp.task('dev', ['dev-clean-html', 'dev-jade', 'watch-sass', 'js-lib'], function() {
   gulp.watch(paths.jade, ['dev-jade']);
 });
 
