@@ -21,37 +21,7 @@ var paths = {
   static: ['src/img/**/*', 'src/font/**/*'],
 };
 
-gulp.task('clean', function(cb) {
-  del(['build'], cb);
-});
-
-gulp.task('copy-static', ['clean'], function() {
-  return gulp.src(paths.static).pipe(gulp.dest('build/'));
-});
-
-gulp.task('compress-css', ['clean', 'dev-translate-sass'], function() {
-  return gulp.src(paths.css)
-    .pipe(minifyCSS({ keepBreaks: false, keepSpecialComments: 0 }))
-    .pipe(gulp.dest('build/css/'))
-    ;
-});
-
-gulp.task('compress-js', ['clean', 'dev-obtain-js-lib'], function() {
-  return gulp.src(paths.js)
-    .pipe(uglify())
-    .pipe(gulp.dest('build/js/'))
-    ;
-});
-
-gulp.task('translate-jade', ['clean'], function() {
-  return gulp.src(paths.jade)
-    .pipe(gulpFilter(paths.jadeExcluded))
-    .pipe(gulpJade())
-    .pipe(rename({extname: '.html'}))
-    .pipe(minifyInline())
-    .pipe(gulp.dest('build/'))
-    ;
-});
+// Dev related tasks
 
 gulp.task('dev-clean-html', function(cb) {
   del('src/**/*.html', cb);
@@ -98,7 +68,8 @@ gulp.task('dev-translate-sass', ['dev-clean-sass.css'], function () {
     .pipe(rename({
       suffix: '.sass'
     }))
-    .pipe(gulp.dest('src/css'));
+    .pipe(gulp.dest('src/css'))
+    ;
 });
 
 gulp.task('dev-watch-sass', function() {
@@ -107,8 +78,44 @@ gulp.task('dev-watch-sass', function() {
     .pipe(rename({
       suffix: '.sass'
     }))
-    .pipe(gulp.dest('src/css'));
-})
+    .pipe(gulp.dest('src/css'))
+    ;
+});
+
+// Build related tasks
+
+gulp.task('clean', function(cb) {
+  del(['dist'], cb);
+});
+
+gulp.task('copy-static', ['clean'], function() {
+  return gulp.src(paths.static).pipe(gulp.dest('dist/'));
+});
+
+gulp.task('compress-css', ['clean', 'dev-translate-sass'], function() {
+  return gulp.src(paths.css)
+    .pipe(minifyCSS({ keepBreaks: false, keepSpecialComments: 0 }))
+    .pipe(gulp.dest('dist/css/'))
+    ;
+});
+
+gulp.task('compress-js', ['clean', 'dev-obtain-js-lib'], function() {
+  return gulp.src(paths.js)
+    .pipe(uglify())
+    .pipe(gulp.dest('dist/js/'))
+    ;
+});
+
+gulp.task('translate-jade', ['clean'], function() {
+  return gulp.src(paths.jade)
+    .pipe(gulpFilter(paths.jadeExcluded))
+    .pipe(gulpJade())
+    .pipe(rename({extname: '.html'}))
+    .pipe(minifyInline())
+    .pipe(gulp.dest('dist/'))
+    ;
+});
+
 
 gulp.task('dev', ['dev-translate-jade', 'dev-watch-jade', 'dev-translate-sass', 'dev-watch-sass', 'dev-obtain-js-lib']);
 
