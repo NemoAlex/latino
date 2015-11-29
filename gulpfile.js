@@ -4,90 +4,114 @@ var gulp = require('gulp')
   , gulpJade = require('gulp-jade')
   , rename = require('gulp-rename')
   , del = require('del')
-  , jade = require('jade')
   , sass = require('gulp-sass')
   , minifyInline = require('gulp-minify-inline')
+  , watch = require('gulp-watch')
+  , affected = require('gulp-jade-find-affected')
+  , gulpFilter = require('gulp-filter')
   ;
 
 var paths = {
-  jade: ['src/**/*.jade', '!src/include/*.jade'],
-  // jsLib: ['node_modules/vue/dist/vue.js'],
-  jsLib: [''],
+  jade: ['src/**/*.jade'],
+  jadeExcluded: ['*', '!src/include/*.jade'],
+  jsLib: [], // ['']
   js: 'src/js/**/*',
-  css: 'src/css/**/*',
-  bin: ['src/img*/**/*', 'src/fonts*/**/*'],
+  sass: 'src/css/**/*.s?ss',
+  css: 'src/css/**/*.css',
+  static: ['src/img/**/*', 'src/font/**/*'],
 };
 
 gulp.task('clean', function(cb) {
   del(['build'], cb);
 });
 
-gulp.task('copy', ['clean'], function() {
-  return gulp.src(paths.bin).pipe(gulp.dest('build/'));
+gulp.task('copy-static', ['clean'], function() {
+  return gulp.src(paths.static).pipe(gulp.dest('build/'));
 });
 
-gulp.task('css', ['clean'], function() {
+gulp.task('compress-css', ['clean', 'dev-translate-sass'], function() {
   return gulp.src(paths.css)
     .pipe(minifyCSS({ keepBreaks: false, keepSpecialComments: 0 }))
     .pipe(gulp.dest('build/css/'))
     ;
 });
 
-gulp.task('clean-js-lib', function(cb) {
-  del('src/js/lib', cb);
-});
-gulp.task('js-lib', ['clean-js-lib'], function(cb) {
-  return gulp.src(paths.jsLib)
-    .pipe(gulp.dest('src/js/lib/'))
-    ;
-});
-
-gulp.task('js', ['clean'], function() {
+gulp.task('compress-js', ['clean', 'dev-obtain-js-lib'], function() {
   return gulp.src(paths.js)
     .pipe(uglify())
     .pipe(gulp.dest('build/js/'))
     ;
 });
 
-gulp.task('jade', ['clean'], function() {
+gulp.task('translate-jade', ['clean'], function() {
   return gulp.src(paths.jade)
-    .pipe(gulpJade({jade: jade}))
+    .pipe(gulpFilter(paths.jadeExcluded))
+    .pipe(gulpJade())
     .pipe(rename({extname: '.html'}))
     .pipe(minifyInline())
     .pipe(gulp.dest('build/'))
     ;
 });
 
-gulp.task('dev-jade', function() {
+gulp.task('dev-clean-html', function(cb) {
+  del('src/**/*.html', cb);
+});
+gulp.task('dev-clean-sass.css', function(cb) {
+  del('src/css/**/*.s?ss.css', cb);
+});
+gulp.task('dev-clean-js-lib', function(cb) {
+  del('src/js/lib', cb);
+});
+
+gulp.task('dev-obtain-js-lib', ['dev-clean-js-lib'], function() {
+  return gulp.src(paths.jsLib)
+    .pipe(gulp.dest('src/js/lib/'))
+    ;
+});
+
+gulp.task('dev-translate-jade', ['dev-clean-html'], function() {
   return gulp.src(paths.jade)
-    .pipe(gulpJade({jade: jade}))
+    .pipe(gulpFilter(paths.jadeExcluded))
+    .pipe(gulpJade({
+      pretty: true,
+    }))
     .pipe(rename({extname: '.html'}))
     .pipe(gulp.dest('src/'))
     ;
 });
 
-gulp.task('watch-sass', ['sass'], function() {
-  gulp.watch(['src/css/**/*.scss', 'src/css/**/*.sass'], ['sass']);
+gulp.task('dev-watch-jade', function() {
+  watch(paths.jade)
+    .pipe(affected())
+    .pipe(gulpFilter(paths.jadeExcluded))
+    .pipe(gulpJade({
+      pretty: true,
+    }))
+    .pipe(rename({extname: '.html'}))
+    .pipe(gulp.dest('src/'))
+    ;
 });
 
-gulp.task('sass', function () {
-  gulp.src(['src/css/**/*.scss', 'src/css/**/*.sass'])
+gulp.task('dev-translate-sass', ['dev-clean-sass.css'], function () {
+  gulp.src(paths.sass)
     .pipe(sass().on('error', sass.logError))
     .pipe(rename({
-      suffix: '_sass'
+      suffix: '.sass'
     }))
     .pipe(gulp.dest('src/css'));
 });
 
-gulp.task('build', ['css', 'js', 'jade', 'sass', 'copy']);
+gulp.task('dev-watch-sass', function() {
+  watch(paths.sass)
+    .pipe(sass().on('error', sass.logError))
+    .pipe(rename({
+      suffix: '.sass'
+    }))
+    .pipe(gulp.dest('src/css'));
+})
 
+gulp.task('dev', ['dev-translate-jade', 'dev-watch-jade', 'dev-translate-sass', 'dev-watch-sass', 'dev-obtain-js-lib']);
 
-gulp.task('dev-clean-html', function(cb) {
-  del('src/**/*.html', cb);
-});
-
-gulp.task('dev', ['dev-clean-html', 'dev-jade', 'watch-sass', 'js-lib'], function() {
-  gulp.watch(paths.jade, ['dev-jade']);
-});
+gulp.task('build', ['compress-css', 'compress-js', 'translate-jade', 'copy-static']);
 
 gulp.task('default', ['dev']);

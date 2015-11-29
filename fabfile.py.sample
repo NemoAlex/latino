@@ -1,0 +1,11 @@
+from __future__ import with_statement
+from fabric.api import *
+from fabric.contrib.console import confirm
+
+env.hosts = ['root@myserver']
+
+def update():
+  with cd('/var/www/myserver'):
+    run('git pull')
+    run('npm install')
+    run('gulp build')

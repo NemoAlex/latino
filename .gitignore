@@ -1,7 +1,8 @@
 nginx.conf
-fabfile.*
+fabfile.pyc
+fabfile.py
 node_modules
 build
 src/**/*.html
-src/**/*_sass.css
+src/**/*.sass.css
 *.log
