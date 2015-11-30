@@ -22,7 +22,7 @@ Install Gulp:
 npm install -g gulp
 ```
 
-In the project floder, install node modules:
+In the project folder, install node modules:
 
 ```
 npm install
