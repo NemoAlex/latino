@@ -6,23 +6,23 @@ Let's writing JADE and SASS in modern way, Latino will compile them to HTML and 
 
 ## Features and Limitions
 
-  * Requirements: Node.js NPM and Gulp
+  * Requirements: Node.js + npm + Gulp
   * Watch local changes and recompile on the fly
   * Compile and compress JS/CSS/HTML in production environment
   * fabfile and nginx config sample
   * Must using Jade in source instead of HTML
   * You can use sass/scss or css
-  * Use NPM to manage JS libs, not Bower
+  * Use npm to manage JS libs, not Bower
 
 ## Usage
 
-Install requirements:
+Install Gulp:
 
 ```
 npm install -g gulp
 ```
 
-Enter project floder, then:
+In the project floder, install node modules:
 
 ```
 npm install
