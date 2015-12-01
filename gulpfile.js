@@ -24,13 +24,13 @@ var paths = {
 // Dev related tasks
 
 gulp.task('dev-clean-html', function(cb) {
-  del('src/**/*.html', cb);
+  return del(['src/**/*.html'], cb);
 });
 gulp.task('dev-clean-sass.css', function(cb) {
-  del('src/css/**/*.s?ss.css', cb);
+  return del(['src/css/**/*.s?ss.css'], cb);
 });
 gulp.task('dev-clean-js-lib', function(cb) {
-  del('src/js/lib', cb);
+  return del(['src/js/lib'], cb);
 });
 
 gulp.task('dev-obtain-js-lib', ['dev-clean-js-lib'], function() {
@@ -85,7 +85,7 @@ gulp.task('dev-watch-sass', function() {
 // Build related tasks
 
 gulp.task('clean', function(cb) {
-  del(['dist'], cb);
+  return del(['dist'], cb);
 });
 
 gulp.task('copy-static', ['clean'], function() {
