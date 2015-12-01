@@ -1,8 +1,8 @@
 # Latino
 
-This is a seed project for front end developers.
+This is a seed project for pure front-end Web project.
 
-Let's writing JADE and SASS in modern way, Latino will compile them to HTML and CSS.
+Let's write JADE and SASS, Latino will compile them to HTML and CSS.
 
 ## Features and Limitions
 
