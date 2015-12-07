@@ -23,14 +23,14 @@ var paths = {
 
 // Dev related tasks
 
-gulp.task('dev-clean-html', function(cb) {
-  return del(['src/**/*.html'], cb);
+gulp.task('dev-clean-html', function() {
+  return del(['src/**/*.html']);
 });
-gulp.task('dev-clean-sass.css', function(cb) {
-  return del(['src/css/**/*.s?ss.css'], cb);
+gulp.task('dev-clean-sass.css', function() {
+  return del(['src/css/**/*.s?ss.css']);
 });
 gulp.task('dev-clean-js-lib', function(cb) {
-  return del(['src/js/lib'], cb);
+  return del(['src/js/lib']);
 });
 
 gulp.task('dev-obtain-js-lib', ['dev-clean-js-lib'], function() {
@@ -63,7 +63,7 @@ gulp.task('dev-watch-jade', function() {
 });
 
 gulp.task('dev-translate-sass', ['dev-clean-sass.css'], function () {
-  gulp.src(paths.sass)
+  return gulp.src(paths.sass)
     .pipe(sass().on('error', sass.logError))
     .pipe(rename({
       suffix: '.sass'
@@ -84,8 +84,8 @@ gulp.task('dev-watch-sass', function() {
 
 // Build related tasks
 
-gulp.task('clean', function(cb) {
-  return del(['dist'], cb);
+gulp.task('clean', function() {
+  return del(['dist']);
 });
 
 gulp.task('copy-static', ['clean'], function() {
