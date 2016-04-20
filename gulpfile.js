@@ -89,7 +89,7 @@ gulp.task('clean', function() {
 });
 
 gulp.task('copy-static', ['clean'], function() {
-  return gulp.src(paths.static).pipe(gulp.dest('dist/'));
+  return gulp.src(paths.static, {base: 'src/'}).pipe(gulp.dest('dist/'));
 });
 
 gulp.task('compress-css', ['clean', 'dev-translate-sass'], function() {
