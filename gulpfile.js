@@ -1,5 +1,5 @@
 var gulp = require('gulp')
-  , minifyCSS = require('gulp-minify-css')
+  , minifyCSS = require('gulp-clean-css')
   , uglify = require('gulp-uglify')
   , gulpJade = require('gulp-jade')
   , rename = require('gulp-rename')
