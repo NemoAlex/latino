@@ -5,7 +5,12 @@
   "main": "index.js",
   "author": "",
   "license": "ISC",
+  "scripts": {
+    "dev": "gulp dev & node build/dev"
+  },
   "dependencies": {
+    "browserify": "^13.1.0",
+    "browserify-directory": "^1.0.2",
     "del": "^2.1.0",
     "gulp": "^3.9.0",
     "gulp-clean-css": "^2.0.12",
@@ -15,7 +20,16 @@
     "gulp-minify-inline": "^0.2.1",
     "gulp-rename": "^1.2.2",
     "gulp-sass": "^2.1.0",
+    "gulp-sourcemaps": "^1.6.0",
     "gulp-uglify": "^2.0.0",
-    "gulp-watch": "^4.3.5"
+    "gulp-util": "^3.0.7",
+    "gulp-watch": "^4.3.5",
+    "vinyl-buffer": "^1.0.0",
+    "vinyl-source-stream": "^1.1.0",
+    "watchify": "^3.7.0"
+  },
+  "devDependencies": {
+    "finalhandler": "^0.5.0",
+    "serve-static": "^1.11.1"
   }
 }
