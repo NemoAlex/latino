@@ -149,7 +149,7 @@ gulp.task('dev', ['dev-bundle-js', 'dev-js', 'dev-jade', 'dev-sass'], function (
   var serve = serveStatic('dev', {
     'index': ['index', 'index.html', 'index.htm'],
     'setHeaders': function (res, p) {
-      if (path.extname(p) === '') res.setHeader('Content-Type', 'text/html')
+      if (path.extname(p) === HTML_EXT_NAME) res.setHeader('Content-Type', 'text/html')
     }
   })
 
