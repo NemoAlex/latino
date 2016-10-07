@@ -11,7 +11,6 @@
   },
   "dependencies": {
     "browserify": "^13.1.0",
-    "browserify-directory": "^1.0.2",
     "del": "^2.1.0",
     "gulp": "^3.9.0",
     "gulp-clean-css": "^2.0.12",
