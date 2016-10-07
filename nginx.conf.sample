@@ -1,7 +1,9 @@
 server {
     listen       80;
     server_name  latino.dev;
-    root         /root/latino/dist;
+    root         /root/to/latino/dist;
+    default_type "text/html";
+    index        index index.htm index.html;
 
     gzip on;
     gzip_proxied any;
