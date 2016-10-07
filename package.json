@@ -6,7 +6,8 @@
   "author": "",
   "license": "ISC",
   "scripts": {
-    "dev": "gulp dev & node build/dev"
+    "dev": "node node_modules/gulp/bin/gulp.js",
+    "build": "node node_modules/gulp/bin/gulp.js build"
   },
   "dependencies": {
     "browserify": "^13.1.0",
