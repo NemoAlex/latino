@@ -25,7 +25,7 @@ const PATHS = {
   js: ['src/js/**/*', '!src/js/bundle/**/*', '!src/js/bundle'],
   sass: 'src/css/**/*.s?ss',
   css: 'src/css/**/*.css',
-  static: ['src/img/**/*', 'src/font/**/*'],
+  static: ['src/img/**/*', 'src/font/**/*', 'src/assets/**/*'],
 }
 
 // Default html file name, change it if necessary
@@ -38,6 +38,10 @@ const DEV_SERVER_PORT = '3000'
 
 gulp.task('dev-clean', function () {
   return del(['dev/**/*'])
+})
+
+gulp.task('dev-copy-static', ['dev-clean'], function () {
+  return gulp.src(PATHS.static, {base: 'src/'}).pipe(gulp.dest('dev/'))
 })
 
 gulp.task('dev-jade', ['dev-clean'], function () {
@@ -141,7 +145,7 @@ gulp.task('translate-jade', ['clean'], function () {
     .pipe(gulp.dest('dist/'))
 })
 
-gulp.task('dev', ['dev-bundle-js', 'dev-js', 'dev-jade', 'dev-sass'], function () {
+gulp.task('dev', ['dev-bundle-js', 'dev-js', 'dev-jade', 'dev-sass', 'dev-copy-static'], function () {
   var finalhandler = require('finalhandler')
     , http = require('http')
     , serveStatic = require('serve-static')
