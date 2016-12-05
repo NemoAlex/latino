@@ -43,6 +43,11 @@ gulp.task('dev-clean', function () {
 gulp.task('dev-copy-static', ['dev-clean'], function () {
   return gulp.src(PATHS.static, {base: 'src/'}).pipe(gulp.dest('dev/'))
 })
+gulp.task('dev-css', ['dev-clean'], function () {
+  watch(PATHS.css)
+    .pipe(gulp.dest('dev/css'))
+  return gulp.src(PATHS.css, {base: 'src/'}).pipe(gulp.dest('dev/'))
+})
 
 gulp.task('dev-jade', ['dev-clean'], function () {
   watch(PATHS.jade)
@@ -107,6 +112,10 @@ gulp.task('copy-static', ['clean'], function () {
   return gulp.src(PATHS.static, {base: 'src/'}).pipe(gulp.dest('dist/'))
 })
 
+gulp.task('copy-css', ['clean'], function () {
+  return gulp.src(PATHS.css, {base: 'src/'}).pipe(gulp.dest('dist/'))
+})
+
 gulp.task('translate-sass', ['clean'], function () {
   return gulp.src(PATHS.sass)
     .pipe(sass().on('error', sass.logError))
@@ -114,7 +123,7 @@ gulp.task('translate-sass', ['clean'], function () {
 
 })
 
-gulp.task('compress-css', ['clean', 'translate-sass'], function () {
+gulp.task('compress-css', ['clean', 'translate-sass', 'copy-css'], function () {
   return gulp.src('dist/css/**/*.css')
     .pipe(minifyCSS({ keepBreaks: false, keepSpecialComments: 0 }))
     .pipe(gulp.dest('dist/css/'))
@@ -145,7 +154,7 @@ gulp.task('translate-jade', ['clean'], function () {
     .pipe(gulp.dest('dist/'))
 })
 
-gulp.task('dev', ['dev-bundle-js', 'dev-js', 'dev-jade', 'dev-sass', 'dev-copy-static'], function () {
+gulp.task('dev', ['dev-bundle-js', 'dev-js', 'dev-jade', 'dev-sass', 'dev-copy-static', 'dev-css'], function () {
   var finalhandler = require('finalhandler')
     , http = require('http')
     , serveStatic = require('serve-static')
