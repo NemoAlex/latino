@@ -20,7 +20,7 @@ var gulp = require('gulp')
 
 const PATHS = {
   jade: ['src/**/*.jade'],
-  jadeExcluded: ['*', '!src/include/*.jade'],
+  jadeExcluded: ['**/*', '!include/*'],
   jsBundle: 'src/js/bundle/**/*',
   js: ['src/js/**/*', '!src/js/bundle/**/*', '!src/js/bundle'],
   sass: 'src/css/**/*.s?ss',
