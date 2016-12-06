@@ -37,16 +37,16 @@ const DEV_SERVER_PORT = '3000'
 // Dev related tasks
 
 gulp.task('dev-clean', function () {
-  return del(['dev/**/*'])
+  return del(['tmp/**/*'])
 })
 
 gulp.task('dev-copy-static', ['dev-clean'], function () {
-  return gulp.src(PATHS.static, {base: 'src/'}).pipe(gulp.dest('dev/'))
+  return gulp.src(PATHS.static, {base: 'src/'}).pipe(gulp.dest('tmp/'))
 })
 gulp.task('dev-css', ['dev-clean'], function () {
   watch(PATHS.css)
-    .pipe(gulp.dest('dev/css'))
-  return gulp.src(PATHS.css, {base: 'src/'}).pipe(gulp.dest('dev/'))
+    .pipe(gulp.dest('tmp/css'))
+  return gulp.src(PATHS.css, {base: 'src/'}).pipe(gulp.dest('tmp/'))
 })
 
 gulp.task('dev-jade', ['dev-clean'], function () {
@@ -57,23 +57,23 @@ gulp.task('dev-jade', ['dev-clean'], function () {
       pretty: true,
     }))
     .pipe(rename({extname: HTML_EXT_NAME}))
-    .pipe(gulp.dest('dev/'))
+    .pipe(gulp.dest('tmp/'))
   return gulp.src(PATHS.jade)
     .pipe(gulpFilter(PATHS.jadeExcluded))
     .pipe(gulpJade({
       pretty: true,
     }))
     .pipe(rename({extname: HTML_EXT_NAME}))
-    .pipe(gulp.dest('dev/'))
+    .pipe(gulp.dest('tmp/'))
 })
 
 gulp.task('dev-sass', ['dev-clean'], function () {
   watch(PATHS.sass)
     .pipe(sass().on('error', sass.logError))
-    .pipe(gulp.dest('dev/css'))
+    .pipe(gulp.dest('tmp/css'))
   return gulp.src(PATHS.sass)
     .pipe(sass().on('error', sass.logError))
-    .pipe(gulp.dest('dev/css'))
+    .pipe(gulp.dest('tmp/css'))
 })
 
 var browserifyOptions = Object.assign({}, watchify.args, {
@@ -91,15 +91,15 @@ function bundle () {
     .pipe(buffer())
     .pipe(sourcemaps.init({loadMaps: true}))
     .pipe(sourcemaps.write('./'))
-    .pipe(gulp.dest('dev/js'))
+    .pipe(gulp.dest('tmp/js'))
 }
 gulp.task('dev-bundle-js', ['dev-clean'], bundle)
 
 gulp.task('dev-js', ['dev-clean'], function () {
   watch(PATHS.js)
-    .pipe(gulp.dest('dev/js'))
+    .pipe(gulp.dest('tmp/js'))
   return gulp.src(PATHS.js)
-    .pipe(gulp.dest('dev/js'))
+    .pipe(gulp.dest('tmp/js'))
 })
 
 // Build related tasks
@@ -159,7 +159,7 @@ gulp.task('dev', ['dev-bundle-js', 'dev-js', 'dev-jade', 'dev-sass', 'dev-copy-s
     , http = require('http')
     , serveStatic = require('serve-static')
 
-  var serve = serveStatic('dev', {
+  var serve = serveStatic('tmp', {
     'index': ['index', 'index.html', 'index.htm'],
     'setHeaders': function (res, p) {
       if (path.extname(p) === HTML_EXT_NAME) res.setHeader('Content-Type', 'text/html')

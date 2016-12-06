@@ -3,7 +3,7 @@ fabfile.pyc
 fabfile.py
 node_modules
 dist
-dev
+tmp
 src/**/*.html
 src/**/*.sass.css
 *.log
